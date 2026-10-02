@@ -46,11 +46,12 @@ Reports are generated to `/reports/<game_id>/report.json`, `/report.md`, and `/g
 
 ## Python clients
 
-- Bundled client IDs exposed by the pre-game menu and `POST /api/matches/launch`: `python_chess`, `python_minimax`, `python_bootchess`, `python_ollama` (plus `python_template` for backwards compatibility).
+- Bundled client IDs exposed by the pre-game menu and `POST /api/matches/launch`: `python_chess`, `python_minimax`, `python_bootchess`, `python_ollama`, `python_llamacpp` (plus `python_template` for backwards compatibility).
 - `clients/python_chess/` contains a python-chess-based random legal-move bot.
 - `clients/python_template/` contains a random legal-move bot starter.
 - `clients/python_bootchess/` contains a very simple BootChess-inspired client that prefers captures and otherwise moves closer to the opposing king.
 - `clients/python_ollama/` contains an LLM-based bot that queries an Ollama model for moves.
+- `clients/python_llamacpp/` contains an LLM-based bot that queries a llama.cpp OpenAI-compatible endpoint for moves.
 
 ### Ollama client
 
@@ -71,7 +72,31 @@ Example:
 ```bash
 PUNCHESS_OLLAMA_MODEL=llama3.2 python clients/python_ollama/bot.py
 ```
-- `clients/python_minimax/` contains a simple minimax-based bot. The referenced `apostolisv/chess-ai` repository did not expose an explicit license in its repository root files or README, so this bot is an original implementation instead of a direct code copy.
+
+### llama.cpp client
+
+The llama.cpp client uses the OpenAI-compatible `/v1/chat/completions` endpoint exposed by `llama-server`.
+
+Environment variables:
+
+- `PUNCHESS_URL` (default `http://localhost:2700`)
+- `PUNCHESS_BOT_NAME` (default `llama.cpp-bot`)
+- `PUNCHESS_LLAMACPP_URL` (default `http://127.0.0.1:11436/v1`)
+- `PUNCHESS_LLAMACPP_MODEL` (default `qwen3.5-35b-ud-q3_k_xl`)
+- `PUNCHESS_LLAMACPP_TEMPERATURE` (default `0`)
+- `PUNCHESS_LLAMACPP_MAX_TOKENS` (default `32`)
+- `PUNCHESS_HTTP_TIMEOUT_SECONDS` (default `30`)
+- `PUNCHESS_POLL_INTERVAL_SECONDS` (default `0.5`)
+
+Example:
+
+```bash
+PUNCHESS_LLAMACPP_MODEL=qwen3.5-35b-ud-q3_k_xl python clients/python_llamacpp/bot.py
+```
+
+When Punchess runs in Docker, set `PUNCHESS_LLAMACPP_URL` to an address reachable from the container. A host service bound only to loopback is not reachable through the container's default network namespace.
+
+- `clients/python_minimax/` contains a simple minimax client. The referenced `apostolisv/chess-ai` repository did not expose an explicit license in its repository root files or README, so this bot is an original implementation instead of a direct code copy.
 
 ### Launching bundled clients
 

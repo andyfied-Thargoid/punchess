@@ -47,6 +47,12 @@ BUNDLED_CLIENTS: Dict[str, Dict[str, str]] = {
         "description": "LLM-powered client using a local Ollama model.",
         "script": "clients/python_ollama/bot.py",
     },
+    "python_llamacpp": {
+        "id": "python_llamacpp",
+        "name": "Python llama.cpp bot",
+        "description": "LLM-powered client using a llama.cpp OpenAI-compatible endpoint.",
+        "script": "clients/python_llamacpp/bot.py",
+    },
     "python_template": {
         "id": "python_template",
         "name": "Python random bot",
